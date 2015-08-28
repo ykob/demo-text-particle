@@ -7,6 +7,9 @@ var body_width  = document.body.clientWidth * 2;
 var body_height = document.body.clientHeight * 2;
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var ft_canvas = document.createElement('canvas');
+var ft_ctx = ft_canvas.getContext('2d');
+var ft_str = 'ABC';
 var fps = 60;
 var last_time_render = Date.now();
 
@@ -14,13 +17,28 @@ var init = function() {
   renderloop();
   setEvent();
   resizeCanvas();
+  getTextCoord();
   debounce(window, 'resize', function(event){
     resizeCanvas();
   });
 };
 
+var getTextCoord = function() {
+  var text_coord_array = [];
+  
+  ctx.beginPath();
+  ctx.fillStyle = '#333333';
+  ctx.font = body_width / ft_str.length + 'px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(ft_str, body_width / 2, body_height / 2);
+  
+  //return text_coord_array;
+};
+
 var render = function() {
-  ctx.clearRect(0, 0, body_width, body_height);
+  //ctx.clearRect(0, 0, body_width, body_height);
+
 };
 
 var renderloop = function() {

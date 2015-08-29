@@ -25,6 +25,7 @@ var init = function() {
 
 var getTextCoord = function() {
   var text_coord_array = [];
+  var image_data = null;
   
   ctx.beginPath();
   ctx.fillStyle = '#333333';
@@ -32,6 +33,17 @@ var getTextCoord = function() {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(ft_str, body_width / 2, body_height / 2);
+  image_data = ctx.getImageData(0, 0, body_width, body_height);
+  
+  for (var y = 0; y < body_height; y++) {
+    for (var x = 0; x < body_width.length; x++) {
+      var index = (y * body_width + x) * 4;
+      var r = image_data(index);
+      var g = image_data(index + 1);
+      var b = image_data(index + 2);
+      var a = image_data(index + 3);
+    }
+  }
   
   //return text_coord_array;
 };

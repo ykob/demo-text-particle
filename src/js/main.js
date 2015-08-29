@@ -7,24 +7,26 @@ var body_width  = document.body.clientWidth * 2;
 var body_height = document.body.clientHeight * 2;
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-var ft_canvas = document.createElement('canvas');
-var ft_ctx = ft_canvas.getContext('2d');
-var ft_str = 'ABC';
 var fps = 60;
 var last_time_render = Date.now();
+
+var ft_canvas = document.createElement('canvas');
+var ft_ctx = ft_canvas.getContext('2d');
+var ft_str = '@ykob';
+var text_coord_array = [];
 
 var init = function() {
   renderloop();
   setEvent();
   resizeCanvas();
-  getTextCoord();
+  text_coord_array = getTextCoord();
   debounce(window, 'resize', function(event){
     resizeCanvas();
   });
 };
 
 var getTextCoord = function() {
-  var text_coord_array = [];
+  var array = [];
   var image_data = null;
   
   ctx.beginPath();
@@ -33,19 +35,22 @@ var getTextCoord = function() {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(ft_str, body_width / 2, body_height / 2);
-  image_data = ctx.getImageData(0, 0, body_width, body_height);
+  image_data = ctx.getImageData(0, 0, body_width, body_height).data;
   
   for (var y = 0; y < body_height; y++) {
-    for (var x = 0; x < body_width.length; x++) {
+    for (var x = 0; x < body_width; x++) {
       var index = (y * body_width + x) * 4;
-      var r = image_data(index);
-      var g = image_data(index + 1);
-      var b = image_data(index + 2);
-      var a = image_data(index + 3);
+      var r = image_data[index];
+      var g = image_data[index + 1];
+      var b = image_data[index + 2];
+      var a = image_data[index + 3];
+      
+      if (a > 0) {
+        array.push(new Vector2(x, y));
+      }
     }
   }
-  
-  //return text_coord_array;
+  return array;
 };
 
 var render = function() {

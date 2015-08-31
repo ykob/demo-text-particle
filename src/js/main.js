@@ -44,13 +44,8 @@ var intMover = function() {
     var rad = Util.getRadian(Util.getRandomInt(0, 360));
     var index = Util.getRandomInt(0, max);
     
-    if (body_width > body_height) {
-      size = body_height / 500;
-      scalar = Util.getRandomInt(body_height / 10, body_height / 2);
-    } else {
-      size = body_width / 500;
-      scalar = Util.getRandomInt(body_width / 10, body_width / 2);
-    }
+    size = body_width / 360;
+    scalar = Util.getRandomInt(body_width / 10, body_width / 2);
     force = new Vector2(Math.cos(radian) * scalar, Math.sin(radian) * scalar);
     anchor = text_coord_array[index];
     mover.init(position, anchor, size);

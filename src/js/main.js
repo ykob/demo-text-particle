@@ -18,6 +18,8 @@ var ft_ctx = ft_canvas.getContext('2d');
 var ft_str = '@ykob';
 var text_coord_array = [];
 
+var vector_mouse = new Vector2();
+
 var init = function() {
   renderloop();
   setEvent();
@@ -95,8 +97,29 @@ var updateMover = function() {
   }
 };
 
+var applyForceMouseLoop = function() {
+  var scalar = 2000;
+  
+  applyForceMouse(vector_mouse, scalar);
+};
+
+var applyForceMouse = function(vector, scalar_base) {
+  for (var i = 0; i < movers.length; i++) {
+    var distance = vector.distanceTo(movers[i].position);
+    var direct = vector.clone().sub(movers[i].position);
+    var scalar = (scalar_base - distance) / 100;
+    var force = null;
+    
+    if (scalar < 0) scalar = 0;
+    direct.normalize();
+    force = direct.multScalar(scalar * -1);
+    movers[i].applyForce(force);
+  };
+};
+
 var render = function() {
   ctx.clearRect(0, 0, body_width, body_height);
+  applyForceMouseLoop();
   updateMover();
 };
 
@@ -123,13 +146,16 @@ var resizeCanvas = function() {
 };
 
 var setEvent = function () {
-  var eventTouchStart = function(x, y) {
+  var eventTouchStart = function() {
+    var scalar = 30000;
+    
+    applyForceMouse(vector_mouse, scalar);
   };
   
-  var eventTouchMove = function(x, y) {
+  var eventTouchMove = function() {
   };
   
-  var eventTouchEnd = function(x, y) {
+  var eventTouchEnd = function() {
   };
 
   canvas.addEventListener('contextmenu', function (event) {
@@ -142,12 +168,14 @@ var setEvent = function () {
 
   canvas.addEventListener('mousedown', function (event) {
     event.preventDefault();
-    eventTouchStart(event.clientX, event.clientY);
+    vector_mouse.set(event.clientX * 2, event.clientY * 2);
+    eventTouchStart();
   });
 
   canvas.addEventListener('mousemove', function (event) {
     event.preventDefault();
-    eventTouchMove(event.clientX, event.clientY);
+    vector_mouse.set(event.clientX * 2, event.clientY * 2);
+    eventTouchMove();
   });
 
   canvas.addEventListener('mouseup', function (event) {
@@ -157,12 +185,14 @@ var setEvent = function () {
 
   canvas.addEventListener('touchstart', function (event) {
     event.preventDefault();
-    eventTouchStart(event.touches[0].clientX, event.touches[0].clientY);
+    vector_mouse.set(event.touches[0].clientX * 2, event.touches[0].clientY * 2);
+    eventTouchStart();
   });
 
   canvas.addEventListener('touchmove', function (event) {
     event.preventDefault();
-    eventTouchMove(event.touches[0].clientX, event.touches[0].clientY);
+    vector_mouse.set(event.touches[0].clientX * 2, event.touches[0].clientY * 2);
+    eventTouchMove();
   });
 
   canvas.addEventListener('touchend', function (event) {

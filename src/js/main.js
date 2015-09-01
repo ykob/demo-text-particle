@@ -12,6 +12,8 @@ var fps = 60;
 var last_time_render = Date.now();
 
 var movers = [];
+var movers_num = 1200;
+var max = 0;
 
 var ft_canvas = document.createElement('canvas');
 var ft_ctx = ft_canvas.getContext('2d');
@@ -32,8 +34,7 @@ var init = function() {
 };
 
 var intMover = function() {
-  var movers_num = 1200;
-  var max = text_coord_array.length - 1;
+  max = text_coord_array.length - 1;
   
   for (var i = 0; i < movers_num; i++) {
     var mover = new Mover();
@@ -147,8 +148,11 @@ var resizeCanvas = function() {
 
 var setEvent = function () {
   var eventTouchStart = function() {
-    var scalar = 30000;
-    
+    var scalar = 60000;
+    for (var i = 0; i < movers_num; i++) {
+      var index = Util.getRandomInt(0, max);
+      movers[i].anchor = text_coord_array[index];
+    }
     applyForceMouse(vector_mouse, scalar);
   };
   

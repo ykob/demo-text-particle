@@ -38,23 +38,17 @@ var intMover = function() {
   
   for (var i = 0; i < movers_num; i++) {
     var mover = new Mover();
-    var radian = Util.getRadian(Util.getRandomInt(0, 360));
     var position = new Vector2(body_width / 2, body_height / 2);
     var anchor = null;
-    var force = null;
-    var scalar = 0;
     var size = 0;
-    var rad = Util.getRadian(Util.getRandomInt(0, 360));
     var index = Util.getRandomInt(0, max);
     
     size = body_width / 360;
-    scalar = Util.getRandomInt(body_width / 10, body_width / 2);
-    force = new Vector2(Math.cos(radian) * scalar, Math.sin(radian) * scalar);
     anchor = text_coord_array[index];
     mover.init(position, anchor, size);
-    mover.applyForce(force);
     movers[i] = mover;
   }
+  scatteredMover();
 };
 
 var getTextCoord = function() {
@@ -95,6 +89,21 @@ var updateMover = function() {
     mover.updateVelocity();
     mover.updatePosition();
     mover.draw(ctx);
+  }
+};
+
+var scatteredMover = function() {
+  for (var i = 0; i < movers.length; i++) {
+    var mover = movers[i];
+    var radian = Util.getRadian(Util.getRandomInt(0, 360));
+    var vector = new Vector2(body_width / 2, body_height / 2);
+    var scalar = 0;
+    var force = null;
+    
+    mover.position.copy(vector);
+    scalar = Util.getRandomInt(body_width / 10, body_width / 4);
+    force = new Vector2(Math.cos(radian) * scalar, Math.sin(radian) * scalar);
+    mover.applyForce(force);
   }
 };
 
@@ -148,12 +157,7 @@ var resizeCanvas = function() {
 
 var setEvent = function () {
   var eventTouchStart = function() {
-    var scalar = 60000;
-    for (var i = 0; i < movers_num; i++) {
-      var index = Util.getRandomInt(0, max);
-      movers[i].anchor = text_coord_array[index];
-    }
-    applyForceMouse(vector_mouse, scalar);
+    scatteredMover();
   };
   
   var eventTouchMove = function() {

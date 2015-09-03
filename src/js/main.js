@@ -157,6 +157,10 @@ var resizeCanvas = function() {
 
 var setEvent = function () {
   var eventTouchStart = function() {
+    for (var i = 0; i < movers_num; i++) {
+      var index = Util.getRandomInt(0, max);
+      movers[i].anchor = text_coord_array[index];
+    }
     scatteredMover();
   };
   

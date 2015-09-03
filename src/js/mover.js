@@ -12,9 +12,9 @@ var exports = function(){
     this.mass = 0;
     this.direction = 0;
     this.k = 0.1;
-    this.r = Util.getRandomInt(100, 220);
-    this.g = Util.getRandomInt(220, 255);
-    this.b = Util.getRandomInt(100, 160);
+    this.r = Util.getRandomInt(220, 255);
+    this.g = Util.getRandomInt(120, 235);
+    this.b = Util.getRandomInt(120, 235);
   };
   
   Mover.prototype = {
@@ -59,7 +59,7 @@ var exports = function(){
       this.direction = Math.atan2(v.y, v.x);
     },
     draw: function(context, mode) {
-      var resize = Math.floor(this.acceleration.length() / 5);
+      var resize = Math.floor(this.acceleration.length() / 10);
       context.fillStyle = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
       context.beginPath();
       context.arc(this.position.x, this.position.y, this.radius + resize, 0, Math.PI / 180, true);

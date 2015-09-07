@@ -15,9 +15,10 @@ var movers = [];
 var movers_num = 1200;
 var max = 0;
 
+var input = document.getElementById('input-text');
 var ft_canvas = document.createElement('canvas');
 var ft_ctx = ft_canvas.getContext('2d');
-var ft_str = '@ykob';
+var ft_str = input.value;
 var text_coord_array = [];
 
 var vector_mouse = new Vector2();
@@ -30,6 +31,9 @@ var init = function() {
   intMover();
   debounce(window, 'resize', function(event){
     resizeCanvas();
+  });
+  debounce(input, 'keyup', function(event){
+    checkInputValue();
   });
 };
 
@@ -55,6 +59,7 @@ var getTextCoord = function() {
   var array = [];
   var image_data = null;
   
+  ft_ctx.clearRect(0, 0, body_width, body_height);
   ft_ctx.beginPath();
   ft_ctx.fillStyle = '#333333';
   ft_ctx.font = body_width / ft_str.length + 'px Arial';
@@ -107,12 +112,6 @@ var scatteredMover = function() {
   }
 };
 
-var applyForceMouseLoop = function() {
-  var scalar = 2000;
-  
-  applyForceMouse(vector_mouse, scalar);
-};
-
 var applyForceMouse = function(vector, scalar_base) {
   for (var i = 0; i < movers.length; i++) {
     var distance = vector.distanceTo(movers[i].position);
@@ -127,9 +126,16 @@ var applyForceMouse = function(vector, scalar_base) {
   };
 };
 
+var checkInputValue = function() {
+  if (input.value === ft_str) return;
+  ft_str = input.value;
+  text_coord_array = getTextCoord();
+  intMover();
+  console.log(ft_str);
+};
+
 var render = function() {
   ctx.clearRect(0, 0, body_width, body_height);
-  applyForceMouseLoop();
   updateMover();
 };
 

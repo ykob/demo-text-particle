@@ -17,4 +17,17 @@ canvas {
   bottom: 0;
   left: 0;
 }
-
+.input-text {
+  width: 50%;
+  min-widht: 300px;
+  position: absolute;
+  right: 0;
+  bottom: 10%;
+  left: 0;
+  margin: 0 auto;
+  padding: 0.2em;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: 2em;
+  text-align: center;
+}

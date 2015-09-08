@@ -12,7 +12,7 @@ var fps = 60;
 var last_time_render = Date.now();
 
 var movers = [];
-var movers_num = 1200;
+var movers_num = 0;
 var max = 0;
 
 var input = document.getElementById('input-text');
@@ -20,6 +20,7 @@ var ft_canvas = document.createElement('canvas');
 var ft_ctx = ft_canvas.getContext('2d');
 var ft_str = input.value;
 var text_coord_array = [];
+var font_size = 0;
 
 var vector_mouse = new Vector2();
 
@@ -28,7 +29,7 @@ var init = function() {
   setEvent();
   resizeCanvas();
   text_coord_array = getTextCoord();
-  intMover();
+  initMover();
   debounce(window, 'resize', function(event){
     resizeCanvas();
   });
@@ -37,8 +38,10 @@ var init = function() {
   });
 };
 
-var intMover = function() {
+var initMover = function() {
+  movers = [];
   max = text_coord_array.length - 1;
+  movers_num = ft_str.length * 120;
   
   for (var i = 0; i < movers_num; i++) {
     var mover = new Mover();
@@ -47,7 +50,7 @@ var intMover = function() {
     var size = 0;
     var index = Util.getRandomInt(0, max);
     
-    size = body_width / 360;
+    size = font_size / 50;
     anchor = text_coord_array[index];
     mover.init(position, anchor, size);
     movers[i] = mover;
@@ -59,13 +62,14 @@ var getTextCoord = function() {
   var array = [];
   var image_data = null;
   
+  font_size = body_width / Util.getByte(ft_str) * 1.8;
   ft_ctx.clearRect(0, 0, body_width, body_height);
   ft_ctx.beginPath();
   ft_ctx.fillStyle = '#333333';
-  ft_ctx.font = body_width / ft_str.length + 'px Arial';
+  ft_ctx.font = font_size + 'px Arial';
   ft_ctx.textAlign = 'center';
   ft_ctx.textBaseline = 'middle';
-  ft_ctx.fillText(ft_str, body_width / 2, body_height / 2);
+  ft_ctx.fillText(ft_str, body_width / 2, body_height / 2.2);
   image_data = ft_ctx.getImageData(0, 0, body_width, body_height).data;
   
   for (var y = 0; y < body_height; y++) {
@@ -130,8 +134,7 @@ var checkInputValue = function() {
   if (input.value === ft_str) return;
   ft_str = input.value;
   text_coord_array = getTextCoord();
-  intMover();
-  console.log(ft_str);
+  initMover();
 };
 
 var render = function() {

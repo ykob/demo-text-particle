@@ -13,6 +13,18 @@ var exports = {
     var z = Math.cos(rad1) * Math.sin(rad2) * r;
     var y = Math.sin(rad1) * r;
     return [x, y, z];
+  },
+  getByte: function(str) {
+    var b = 0;
+    for (i = 0; i < str.length; i++) {
+      var n = escape(str.charAt(i));
+      if (n.length < 4) {
+        b += 1;
+      } else {
+        b += 2;
+      }
+    }
+    return b;
   }
 };
 

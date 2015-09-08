@@ -50,7 +50,7 @@ var initMover = function() {
     var size = 0;
     var index = Util.getRandomInt(0, max);
     
-    size = font_size / 50;
+    size = font_size / 40;
     anchor = text_coord_array[index];
     mover.init(position, anchor, size);
     movers[i] = mover;

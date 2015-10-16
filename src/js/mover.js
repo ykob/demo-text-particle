@@ -9,18 +9,16 @@ var exports = function(){
     this.acceleration = new Vector2();
     this.anchor = new Vector2();
     this.radius = 0;
-    this.mass = 0;
     this.direction = 0;
     this.k = 0.1;
-    this.r = Util.getRandomInt(220, 255);
-    this.g = Util.getRandomInt(120, 235);
-    this.b = Util.getRandomInt(120, 235);
+    this.h = Util.getRandomInt(-30, 55);
+    this.s = Util.getRandomInt(70, 100);
+    this.l = Util.getRandomInt(70, 85);
   };
   
   Mover.prototype = {
     init: function(position, anchor, size) {
-      this.radius = Util.getRandomInt(size, size * 3);
-      this.mass = this.radius / 10;
+      this.radius = Util.getRandomInt(size, size * 2.5);
       this.position = position.clone();
       this.velocity = position.clone();
       this.anchor = anchor.clone();
@@ -60,7 +58,7 @@ var exports = function(){
     },
     draw: function(context, mode) {
       var resize = Math.floor(this.acceleration.length() / 10);
-      context.fillStyle = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
+      context.fillStyle = 'hsl(' + this.h + ',' + this.s + '%,' + this.l + '%)';
       context.beginPath();
       context.arc(this.position.x, this.position.y, this.radius + resize, 0, Math.PI / 180, true);
       context.fill();
